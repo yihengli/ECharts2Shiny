@@ -354,11 +354,12 @@ renderLineChart <- function(div_id,
                   ifelse(show.tools,
                          "toolbox:{feature:{saveAsImage:{}}}, ",
                          ""),
-
+                  
+                  # Lgend Box border added - 2016-07-26
                   ifelse(show.legend,
                          paste("legend:{data:",
                                legend_name,
-                               "},",
+                               "orient:'vertical',left:'right',top:'3%',borderWidth:1",
                                sep=""),
                          ""),
                   "yAxis: { type: 'value'}, xAxis:{type:'category', boundaryGap: false, data:",
