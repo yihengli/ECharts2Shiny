@@ -234,7 +234,7 @@ renderLineChart <- function(div_id,
                             point.size = 5, point.type = "emptyCircle",
                             stack_plot = FALSE, step = "null",
                             show.legend = TRUE, show.tools = TRUE,
-                            running_in_shiny = TRUE){
+                            running_in_shiny = TRUE, show.slider = FALSE){
 
   data <- isolate(data)
 
@@ -354,6 +354,20 @@ renderLineChart <- function(div_id,
                   ifelse(show.tools,
                          "toolbox:{feature:{saveAsImage:{}}}, ",
                          ""),
+                  # Slider added - 2016-07-26
+                  ifelse(show.slider,
+                        "dataZoom: [
+                                    {
+                                      type:'slider',
+                                      xAxisIndex : 0
+                                    },
+                                    {
+                                      type:'slider',
+                                      left: '3%',
+                                      yAxisIndex: 0
+                                    }
+                                  ],",
+                          ''),
                   
                   # Lgend Box border added - 2016-07-26
                   ifelse(show.legend,
