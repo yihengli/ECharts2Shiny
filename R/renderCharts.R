@@ -9,9 +9,9 @@
 # if valid, return the theme place holder statement
 .theme_placeholder <- function(theme){
 
-  valid_themes <- c("default", "roma", "infographic", "macarons", "vintage", "shine")
+  valid_themes <- c("default", "roma", "infographic", "macarons", "vintage", "shine",'EmpireLife')
   if((theme %in% valid_themes) == FALSE){
-    stop("The ECharts theme you specified is invalid. Please check. Valid values include: 'default', 'roma', 'infographic', 'macarons', 'vintage' and 'shine'.")
+    stop("The ECharts theme you specified is invalid. Please check. Valid values include: 'default', 'roma', 'infographic', 'macarons', 'vintage','EmpireLife' and 'shine'.")
   }
 
   return(ifelse(theme == "default",
@@ -234,7 +234,39 @@ renderLineChart <- function(div_id,
                             point.size = 5, point.type = "emptyCircle",
                             stack_plot = FALSE, step = "null",
                             show.legend = TRUE, show.tools = TRUE,
-                            running_in_shiny = TRUE, show.slider = FALSE){
+                            running_in_shiny = TRUE, show.slider = FALSE,
+                            legend.option = list(
+                              orient = 'horizontal',
+                              
+                              left = 'center',
+                              top = 'auto',
+                              borderColor = '#ccc',
+                              borderWidth = 0),
+                            y.name = list(
+                              show.yname = FALSE,
+                              name = 'Y',
+                              axisLabel = list(
+                                formatter = '{value}'
+                              ),
+                              nameLocation = 'middle',
+                              nameGap = 40,
+                              nameTextStyle = list(
+                                color = 'Black',
+                                fontStyle = 'normal',
+                                fontWeight = 'bold',
+                                fontSize = 20
+                              )
+                            ),
+                            markline.option = list(
+                              show.markline = FALSE,
+                              yAxis = sapply(data,mean),
+                              name = 'Mean'
+                            ),
+                            selected = list(
+                              show = FALSE,
+                              jscode = ''
+                            ),
+                            show.maxmin = FALSE){
 
   data <- isolate(data)
 
@@ -334,14 +366,46 @@ renderLineChart <- function(div_id,
                          " "),
                   "data:[",
                   paste(data[, i], collapse = ", "),
-                  "]}",
+                  "]",
                   sep=""
     )
+    # Show the max and min points
+    if (show.maxmin == TRUE) {
+      temp <- paste(temp, 
+                    ",markPoint:{data:[{type:'max',name:'Max'},{type:'min',name:'Min'}]}",sep="")
+    }
+    # Show the customised markline
+    if (markline.option$show.markline == TRUE) {
+      temp <- paste(temp,
+                    ",markLine:{data:[{yAxis:",
+                    markline.option$yAxis[i],
+                    ",name:'",
+                    markline.option$name,
+                    "'}]}")
+    }
+    temp <- paste(temp, "}", sep="")
     series_data[i] <- temp
   }
   series_data <- paste(series_data, collapse = ", ")
 
-
+  
+  # The label for yAxis
+  if (y.name$show.yname == TRUE) {
+    yAxis.js = paste("yAxis:{type:'value',",
+                     "name:'",y.name$name,"',",
+                     "nameLocation:'",y.name$nameLocation,"',",
+                     "nameGap:",y.name$nameGap,",",
+                     "nameTextStyle:{fontStyle:'",y.name$nameTextStyle$fontStyle,"',",
+                                  "fontSize:",y.name$nameTextStyle$fontSize,",",
+                                  "fontWeight:'",y.name$nameTextStyle$fontWeight,"',",
+                                  "color:'",y.name$nameTextStyle$color,"'},",
+                     "axisLabel:{formatter:'",y.name$axisLabel$formatter,"'}},",
+                      sep = "")
+  } else {
+    yAxis.js = "yAxis: {type: 'value'},"
+  }
+  
+  
   js_statement <- paste("var " ,
                   div_id,
                   " = echarts.init(document.getElementById('",
@@ -354,29 +418,46 @@ renderLineChart <- function(div_id,
                   ifelse(show.tools,
                          "toolbox:{feature:{saveAsImage:{}}}, ",
                          ""),
-                  # Slider added - 2016-07-26
+                  # Slider for both xAxis and yAxis
                   ifelse(show.slider,
-                        "dataZoom: [
-                                    {
-                                      type:'slider',
-                                      xAxisIndex : 0
-                                    },
-                                    {
-                                      type:'slider',
-                                      left: '3%',
-                                      yAxisIndex: 0
-                                    }
-                                  ],",
+                        "dataZoom: [{type:'slider',xAxisIndex:0},{type:'slider',left:'3%',yAxisIndex: 0}],",
                           ''),
                   
-                  # Lgend Box border added - 2016-07-26
-                  ifelse(show.legend,
+                  # Legend Box: more options to change legend's layout
+                  # Legend Box: change default selected items when initial plot (good for too many lines)
+                  # selected$jscode should follow {'Item1':true,'Item2':false...}
+                  # Only work when show.legend = TRUE
+                  ifelse((show.legend == TRUE & selected$show == TRUE),
                          paste("legend:{data:",
-                               legend_name,
-                               ",orient:'vertical',left:'right',top:'3%',borderWidth:1},",
+                               legend_name,",",
+                               "orient:'",legend.option$orient,"',",
+                               "left:'",legend.option$left,"',",
+                               "top:'",legend.option$top,"',",
+                               "borderColor:'",legend.option$borderColor,"',",
+                               "borderWidth:",legend.option$borderWidth,",",
+                               "selected:",selected$jscode,
+                               "},",
                                sep=""),
                          ""),
-                  "yAxis: { type: 'value'}, xAxis:{type:'category', boundaryGap: false, data:",
+                  ifelse((show.legend == TRUE & selected$show == FALSE),
+                         paste("legend:{data:",
+                               legend_name,",",
+                               "orient:'",legend.option$orient,"',",
+                               "left:'",legend.option$left,"',",
+                               "top:'",legend.option$top,"',",
+                               "borderColor:'",legend.option$borderColor,"',",
+                               "borderWidth:",legend.option$borderWidth,
+                               "},",
+                               sep=""),
+                         ""),
+                  ifelse((show.legend == FALSE & selected$show == TRUE),
+                         paste(
+                           "legend:{selected:",
+                           selected$jscode,
+                           "},",sep=""),
+                         ""),
+                  # Labels for yAxis
+                  yAxis.js,"xAxis:{type:'category', boundaryGap: false, data:",
                   xaxis_name,
                   "}, series:[",
                   series_data,
@@ -387,7 +468,6 @@ renderLineChart <- function(div_id,
                   div_id,
                   ");",
                   sep="")
-
   to_eval <- paste("output$", div_id ," <- renderUI({fluidPage(tags$script(\"",
                    js_statement,
                    "\"))})",
