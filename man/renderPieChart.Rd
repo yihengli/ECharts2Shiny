@@ -8,8 +8,12 @@ Render the Pie Chart Plotted by ECharts into Shiny Application
 renderPieChart() function helps render the pie chart into Shiny application.
 }
 \usage{
-renderPieChart(div_id, data, theme, radius,center_x,center_y,
-               show.legend, show.tools = TRUE,
+renderPieChart(div_id, data,
+               theme = 'default', radius, center_x,center_y,
+               show.label = TRUE,
+               show.legend = TRUE, show.tools = TRUE,
+               font.size.legend= 12,
+               animation = TRUE,
                running_in_shiny)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -28,7 +32,7 @@ The division id users specified for this chart. The division will be specified i
 Which ECharts theme to use. Valid values include "default", "roma", "infographic", "macarons", "vintage", "shine".
 }
   \item{radius}{
-The radius of the pie chart.
+The radius of the pie chart. The default value is "75\%".
 }
   \item{center_x}{
 The position of the center of the pie chart (x axis). Default value is "50\%".
@@ -36,11 +40,20 @@ The position of the center of the pie chart (x axis). Default value is "50\%".
   \item{center_y}{
 The position of the center of the pie chart (y axis). Default value is "50\%".
 }
+  \item{show.label}{
+Whether display the leble for the pie chart. The default value is TRUE.
+}
   \item{show.legend}{
-If display the legends. The default value is TRUE.
+Whether display the legends. The default value is TRUE.
 }
   \item{show.tools}{
-If display the tool bar. The default value is TRUE.
+Whether display the tool bar. The default value is TRUE.
+}
+  \item{font.size.legend}{
+The font size of legend bar. The default value is 12.
+}
+  \item{animation}{
+Whether display the chart with animation. The default value is TRUE.
 }
   \item{running_in_shiny}{
       If we're actually running this in a Shiny library, or we're simply doing testing. Default valus is "TRUE". If "FALSE", the function will print what it's supposed to evaluate.
@@ -59,13 +72,33 @@ If display the tool bar. The default value is TRUE.
 
 
 \examples{
-# please refer to vignettes for the practical examples
+if (interactive()) {
+  library(shiny)
+  library(ECharts2Shiny)
 
-# Prepare sample data for plotting
-dat <- c(rep("Type-A", 5),
-         rep("Type-B", 10),
-         rep("Type-C", 2))
 
-renderPieChart(div_id = "test", data = dat, running_in_shiny = FALSE)
+  dat <- c(rep("Type-A", 8),
+             rep("Type-B", 5),
+             rep("Type-C", 1))
+
+
+  # Server function -------------------------------------------
+  server <- function(input, output) {
+    renderPieChart(div_id = "test",
+                    data = dat)
+  }
+
+  # UI layout -------------------------------------------------
+  ui <- fluidPage(
+    # We MUST load the ECharts javascript library in advance
+    loadEChartsLibrary(),
+
+    tags$div(id="test", style="width:50\%;height:400px;"),
+    deliverChart(div_id = "test")
+  )
+
+  # Run the application --------------------------------------
+  shinyApp(ui = ui, server = server)
+}
 
 }
