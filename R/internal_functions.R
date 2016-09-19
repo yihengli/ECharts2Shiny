@@ -10,7 +10,7 @@
 .theme_placeholder <- function(theme){
 
 <<<<<<< HEAD
-  valid_themes <- c("default", "roma", "infographic", "macarons", "vintage", "shine","EmpireLife","Seneca")
+  valid_themes <- c("default", "roma", "infographic", "macarons", "vintage", "shine","EmpireLife","Seneca","Sunnybrooks")
 =======
   valid_themes <- c("default", "roma", "infographic", "macarons", "vintage", "shine")
 >>>>>>> XD-DENG/master
