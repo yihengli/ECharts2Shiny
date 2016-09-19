@@ -1,23 +1,12 @@
 ###########################################################################
 # Line Chart --------------------------------------------------------------
 ###########################################################################
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> XD-DENG/master
->>>>>>> Cust-themes
 renderLineChart <- function(div_id,
                             data, theme = "default",
                             line.width = 2, line.type = "solid",
                             point.size = 5, point.type = "emptyCircle",
                             stack_plot = FALSE, step = "null",
                             show.legend = TRUE, show.tools = TRUE,
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> Cust-themes
                             running_in_shiny = TRUE, show.slider = FALSE,
                             legend.option = list(
                               orient = 'horizontal',
@@ -51,17 +40,6 @@ renderLineChart <- function(div_id,
                               jscode = ''
                             ),
                             show.maxmin = FALSE){
-<<<<<<< HEAD
-=======
-=======
-                            font.size.legend =12,
-                            font.size.axis.x = 12, font.size.axis.y = 12,
-                            rotate.axis.x = 0, rotate.axis.y = 0,
-                            show.slider.axis.x = FALSE, show.slider.axis.y = FALSE,
-                            animation = TRUE,
-                            running_in_shiny = TRUE){
->>>>>>> XD-DENG/master
->>>>>>> Cust-themes
 
   data <- isolate(data)
 
@@ -161,10 +139,6 @@ renderLineChart <- function(div_id,
                          " "),
                   "data:[",
                   paste(data[, i], collapse = ", "),
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> Cust-themes
                   "]",
                   sep=""
     )
@@ -183,22 +157,10 @@ renderLineChart <- function(div_id,
                     "'}]}")
     }
     temp <- paste(temp, "}", sep="")
-<<<<<<< HEAD
-=======
-=======
-                  "]}",
-                  sep=""
-    )
->>>>>>> XD-DENG/master
->>>>>>> Cust-themes
     series_data[i] <- temp
   }
   series_data <- paste(series_data, collapse = ", ")
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> Cust-themes
   
   # The label for yAxis
   if (y.name$show.yname == TRUE) {
@@ -279,64 +241,6 @@ renderLineChart <- function(div_id,
                   div_id,
                   ");",
                   sep="")
-<<<<<<< HEAD
-=======
-=======
-
-  js_statement <- paste("var " ,
-                        div_id,
-                        " = echarts.init(document.getElementById('",
-                        div_id,
-                        "')",
-                        theme_placeholder,
-                        ");",
-                        "option_", div_id, " = {tooltip : {trigger: 'axis'}, ",
-
-                        ifelse(show.tools,
-                               "toolbox:{feature:{saveAsImage:{}}}, ",
-                               ""),
-
-                        ifelse(show.slider.axis.x == TRUE & show.slider.axis.y == FALSE,
-                               "dataZoom: [{type:'slider', xAxisIndex : 0}],",
-                               ifelse(show.slider.axis.x == FALSE & show.slider.axis.y == TRUE,
-                                      "dataZoom: [{type:'slider', yAxisIndex : 0}],",
-                                      ifelse(show.slider.axis.x == TRUE & show.slider.axis.y == TRUE,
-                                             "dataZoom: [{type:'slider', xAxisIndex : 0},{type:'slider',yAxisIndex:0}],",
-                                             'dataZoom: [],')
-                               )),
-
-                        ifelse(show.legend,
-                               paste("legend:{data:",
-                                     legend_name,
-                                     ", textStyle:{fontSize:", font.size.legend, "}",
-                                     "},",
-                                     sep=""),
-                               ""),
-
-                        ifelse(animation,
-                               "animation:true,",
-                               "animation:false,"),
-
-                        "yAxis: { type: 'value', axisLabel:{rotate:",rotate.axis.y,",textStyle:{fontSize:", font.size.axis.y, "}}}, ",
-                        "xAxis:{type:'category', boundaryGap: false, axisLabel:{rotate:", rotate.axis.x, ",textStyle:{fontSize:", font.size.axis.x, "}}, data:",
-                        xaxis_name,
-                        "}, series:[",
-                        series_data,
-                        "]};",
-
-                        div_id,
-                        ".setOption(option_",
-                        div_id,
-                        ");",
-
-                        "window.addEventListener('resize', function(){",
-                        div_id, ".resize()",
-                        "});",
-
-                        sep="")
-
->>>>>>> XD-DENG/master
->>>>>>> Cust-themes
   to_eval <- paste("output$", div_id ," <- renderUI({fluidPage(tags$script(\"",
                    js_statement,
                    "\"))})",
@@ -348,13 +252,5 @@ renderLineChart <- function(div_id,
     cat(to_eval)
   }
 }
-<<<<<<< HEAD
 
 
-=======
-<<<<<<< HEAD
-
-
-=======
->>>>>>> XD-DENG/master
->>>>>>> Cust-themes
