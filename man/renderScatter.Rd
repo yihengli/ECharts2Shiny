@@ -11,6 +11,11 @@ renderScatter(div_id, data,
               point.size = 10, point.type = "circle",
               theme = "default", auto.scale = TRUE,
               show.legend = TRUE, show.tools = TRUE,
+              font.size.legend = 12,
+              font.size.axis.x = 12, font.size.axis.y = 12,
+              rotate.axis.x = 0, rotate.axis.y = 0,
+              show.slider.axis.x = FALSE, show.slider.axis.y = FALSE,
+              animation = TRUE,
               running_in_shiny = TRUE)
 }
 \arguments{
@@ -42,6 +47,30 @@ If display the legends. The default value is TRUE.
   \item{show.tools}{
 If display the tool bar. The default value is TRUE.
 }
+  \item{font.size.legend}{
+The font size of legend bar. The default value is 12.
+}
+  \item{font.size.axis.x}{
+The font size of the labels on X axis. The default value is 12.
+}
+  \item{font.size.axis.y}{
+The font size of the labels on Y axis. The default value is 12.
+}
+  \item{rotate.axis.x}{
+The rotation degree of labels on X axis. The default value is 0.
+}
+  \item{rotate.axis.y}{
+The rotation degree of labels on Y axis. The default value is 0.
+}
+  \item{show.slider.axis.x}{
+Whether display slider on X axis. The default value is FALSE.
+}
+  \item{show.slider.axis.y}{
+Whether display slider on Y axis. The default value is FALSE.
+}
+  \item{animation}{
+Whether display the chart with animation. The default value is TRUE.
+}
   \item{running_in_shiny}{
       If we're actually running this in a Shiny library, or we're simply doing testing. Default valus is "TRUE". If "FALSE", the function will print what it's supposed to evaluate.
 }
@@ -58,13 +87,33 @@ If display the tool bar. The default value is TRUE.
 }
 
 \examples{
-# please refer to vignettes for the practical examples
+if (interactive()) {
+  library(shiny)
+  library(ECharts2Shiny)
 
-dat <- data.frame(x = iris$Sepal.Length,
-                  y = iris$Sepal.Width,
-                  group = iris$Species)
 
-renderScatter("test", dat, running_in_shiny = FALSE)
+  dat <- data.frame(x = iris$Sepal.Length,
+                    y = iris$Sepal.Width,
+                    group = iris$Species)
+
+
+  # Server function -------------------------------------------
+  server <- function(input, output) {
+    renderScatter("test", data = dat)
+  }
+
+  # UI layout -------------------------------------------------
+  ui <- fluidPage(
+    # We MUST load the ECharts javascript library in advance
+    loadEChartsLibrary(),
+
+    tags$div(id="test", style="width:100\%;height:500px;"),
+    deliverChart(div_id = "test")
+  )
+
+  # Run the application --------------------------------------
+  shinyApp(ui = ui, server = server)
+}
 
 }
 

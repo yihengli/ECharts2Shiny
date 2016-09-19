@@ -1,9 +1,11 @@
 # ECharts2Shiny
-[![CRAN Status Badge](http://www.r-pkg.org/badges/version/ECharts2Shiny)](http://cran.r-project.org/web/packages/ECharts2Shiny)
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/ECharts2Shiny)](http://cran.r-project.org/web/packages/ECharts2Shiny/)
 
 - [中文版](#echarts2shiny包)
 
-![](http://me.seekingqed.com/files/NOT_remove_for_ECharts2Shiny_repo_new.png)
+<p align="center">
+<img src="http://me.seekingqed.com/files/NOT_remove_for_ECharts2Shiny_repo_new.png" alt="Drawing" style="width:80%;"/>
+</p>
 
 As an R package, *ECharts2Shiny* can help embed the interactive charts plotted by [*ECharts*](https://github.com/ecomfe/echarts) library into our *Shiny* application. Currently, we can support 
 
@@ -14,17 +16,15 @@ As an R package, *ECharts2Shiny* can help embed the interactive charts plotted b
 - Radar chart
 - Gauge
 - Word Cloud
+- Heat Map
 
 ### Contents
 - [How to Install](#how-to-install)
-- [Features](#features)
 - [Examples](#examples)
 - [License](#license)
 
 
 ## How to Install
-
-**(As this package is under active development, it's recommended to install the latest development version from GitHub, instead of the CRAN version.)**
 
 From CRAN,
 ```{r}
@@ -37,106 +37,60 @@ library(devtools)
 install_github("XD-DENG/ECharts2Shiny")
 ```
 
-## Features
-
-**Easy to Use**: Only 3-4 lines are needed to insert an interactive chart into our Shiny application.
-
-**Customisable**: As rich options as possible are kept, including the 'grid' option in the original *ECharts* library.
-
-**Theme Options**: In line with the original ECharts library, users can select the theme for their interactive charts, including 'roma', 'shine', 'vintage', 'maracons', and 'infographic'. Users can select the theme of diverse fashion according to their needs and preference.
-
-
-
 ## Examples
 
-**(For more examples, please refer to the `/examples` folder)**
 
 ```{r}
 library(shiny)
 library(ECharts2Shiny)
 
+# Prepare sample data for plotting --------------------------
+dat <- data.frame(c(1, 2, 3),
+                  c(2, 4, 6))
+names(dat) <- c("Type-A", "Type-B")
+row.names(dat) <- c("Time-1", "Time-2", "Time-3")
 
-# Prepare sample data for plotting ---------------------------------------
-
-dat_1 <- c(rep("Type-A", 8),
-           rep("Type-B", 5),
-           rep("Type-C", 1))
-
-dat_2 <- data.frame(c(1, 2, 3, 1),
-                    c(2, 4, 6, 6),
-                    c(3, 2, 7, 5))
-names(dat_2) <- c("Type-A", "Type-B", "Type-C")
-row.names(dat_2) <- c("Time-1", "Time-2", "Time-3", "Time-4")
-
-
-# Server function ---------------------------------------------------------
-
+# Server function -------------------------------------------
 server <- function(input, output) {
-  
   # Call functions from ECharts2Shiny to render charts
-  renderPieChart(div_id = "test_1",
-                 data = dat_1,
-                 radius = "70%",center_x = "50%", center_y = "50%")
-  
-  renderLineChart(div_id = "test_2", theme = "shine",
-                  data = dat_2)
-  
-  renderBarChart(div_id = "test_3", grid_left = '1%',
-                 data = dat_2)
-  
-  renderBarChart(div_id = "test_4", theme = "vintage",
-                 direction = "vertical", grid_left = "10%",
-                 data = dat_2)
-  
-  renderGauge(div_id = "test_5", gauge_name = "Finished Rate",
-              rate = 99.9)
+  renderBarChart(div_id = "test", grid_left = '1%', direction = "vertical",
+                 data = dat)
 }
 
-
-# UI layout ---------------------------------------------------------------
-
+# UI layout -------------------------------------------------
 ui <- fluidPage(
-  # We HAVE TO to load the ECharts javascript library in advance
+  # We MUST load the ECharts javascript library in advance
   loadEChartsLibrary(),
-  loadEChartsTheme('shine'),
-  loadEChartsTheme('vintage'),
   
-  fluidRow(
-    column(6,
-           tags$div(id="test_1", style="width: 80%;height:300px;"),  # Specify the div for the chart. Can also be considered as a space holder
-           deliverChart(div_id = "test_1")  # Deliver the plotting
-    ),
-    column(6,
-           tags$div(id="test_2", style="width:80%;height:300px;"),
-           deliverChart(div_id = "test_2")
-    )
-  ),
-  
-  fluidRow(
-    column(6,
-           tags$div(id="test_3", style="width:80%;height:300px;"),
-           deliverChart(div_id = "test_3")
-    ),
-    column(6,
-           tags$div(id="test_4", style="width:80%;height:300px;"),
-           deliverChart(div_id = "test_4")
-    )
-  ),
-  
-  fluidRow(
-    column(6,
-           tags$div(id="test_5", style="width:100%;height:400px;"),
-           deliverChart(div_id = "test_5")
-    ),
-    column(6
-    )
-  )
+  tags$div(id="test", style="width:50%;height:400px;"),
+  deliverChart(div_id = "test")
 )
 
-# Run the application
+# Run the application --------------------------------------
 shinyApp(ui = ui, server = server)
 ```
-![example](http://me.seekingqed.com/files/do_NOT_remove-used_by_ECharts2Shiny_repo.png)
+<p align="center">
+<img src="http://me.seekingqed.com/files/do_NOT_remove-used_by_ECharts2Shiny_repo.png" alt="Drawing" style="width:50%;"/>
+</p>
+
+**(For more examples, please refer to the `/examples` folder)**
+
+### List of Examples
+
+- [1. Basic](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-1%20Basic)
+- [2. Diverse Plots](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-2%20Diverse%20Plots)
+- [3. More Options in Basic Charts](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-3%20More%20Options)
+- [4. Scatter](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-4%20Scatter)
+- [5. Use Reactive Values as Data Input](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-5%20Use%20Reactive%20Values)
+- [6. Radar Chart](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-6%20Radar%20Chart)
+- [7. Word Cloud - Basic](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-7%20word%20cloud)
+- [8. Word Cloud - More Shapes](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-8%20word%20cloud%20-%20more%20shapes)
+- [9. Word Cloud - Use Vector as Data Input](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-9%20word%20cloud%20-%20Use%20vector%20as%20data%20input)
+- [10. Line Chart with Diverse Options](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-10%20Line%20Chart%20with%20diverse%20options)
+- [11. Scatter with point.type Argument](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-11%20Scatter%20with%20point.type)
+- [12. Step Line Chart](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-12%20Step%20Line%20Chart)
+- [13. Deal with Missing Values](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-13%20Deal%20with%20NA%20Values)
+- [14. Heat Map](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-14%20Heat%20Map)
 
 
 ## License
@@ -147,33 +101,33 @@ The ***ECharts*** JS library is under BSD license ([ECharts](https://github.com/
 
 
 # ECharts2Shiny包
-[![CRAN Status Badge](http://www.r-pkg.org/badges/version/ECharts2Shiny)](http://cran.r-project.org/web/packages/ECharts2Shiny)
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/ECharts2Shiny)](http://cran.r-project.org/web/packages/ECharts2Shiny/)
 
 - [English Version](#echarts2shiny)
 
-![](http://me.seekingqed.com/files/NOT_remove_for_ECharts2Shiny_repo_new.png)
+<p align="center">
+<img src="http://me.seekingqed.com/files/NOT_remove_for_ECharts2Shiny_repo_new.png" alt="Drawing" style="width:80%;"/>
+</p>
 
 ECharts2Shiny作为一个R包，可以帮助在Shiny应用程序中插入由[*ECharts*](https://github.com/ecomfe/echarts)库绘出的交互图形。当前支持的图形包括
 
-- 饼图（pie chart）
-- 折线图（line chart）
-- 柱形图（bar chart）
+- 饼图 （pie chart）
+- 折线图 （line chart）
+- 柱形图 （bar chart）
 - 散点图 (scatter chart)
-- 雷达图(radar chart)
-- 仪表盘（gauge）
-- 词云（word cloud）
+- 雷达图 (radar chart)
+- 仪表盘 （gauge）
+- 词云 （word cloud）
+- 热力图 (heat map)
 
 
 ###目录
 - [安装](#安装)
-- [特点](#特点)
 - [例子](#例子)
 - [许可证](#许可证)
 
 
 ##安装
-
-**(鉴于我们仍在努力添加更多新的功能到ECharts2Shiny当中，我们更推荐由GitHub安装最新的开发版本。)**
 
 CRAN版本
 ```{r}
@@ -186,105 +140,59 @@ library(devtools)
 install_github("XD-DENG/ECharts2Shiny")
 ```
 
-## 特点
-**简洁易用**：只需要3-4行函数，即可在Shiny应用当中插入一个交互图形。
-
-**可定制图形**：在这个R包中，我尽量保留了ECharts库中的各个可选项，包括grid等。
-
-**可选主题**：与原生的ECharts库一致，用户可选择使用多个主题，包括'roma'， 'shine'， 'vintage'， 'maracons'， 以及'infographic'。用户可根据自己的需要及偏好， 为图形选择不同风格的主题。
-
-
-
 ##例子
-**(请参考`/examples` 文件夹以获得更多实例信息)**
 
 ```{r}
 library(shiny)
 library(ECharts2Shiny)
 
+# Prepare sample data for plotting --------------------------
+dat <- data.frame(c(1, 2, 3),
+                  c(2, 4, 6))
+names(dat) <- c("Type-A", "Type-B")
+row.names(dat) <- c("Time-1", "Time-2", "Time-3")
 
-# Prepare sample data for plotting ---------------------------------------
-
-dat_1 <- c(rep("Type-A", 8),
-           rep("Type-B", 5),
-           rep("Type-C", 1))
-
-dat_2 <- data.frame(c(1, 2, 3, 1),
-                    c(2, 4, 6, 6),
-                    c(3, 2, 7, 5))
-names(dat_2) <- c("Type-A", "Type-B", "Type-C")
-row.names(dat_2) <- c("Time-1", "Time-2", "Time-3", "Time-4")
-
-
-# Server function ---------------------------------------------------------
-
+# Server function -------------------------------------------
 server <- function(input, output) {
-  
   # Call functions from ECharts2Shiny to render charts
-  renderPieChart(div_id = "test_1",
-                 data = dat_1,
-                 radius = "70%",center_x = "50%", center_y = "50%")
-  
-  renderLineChart(div_id = "test_2", theme = "shine",
-                  data = dat_2)
-  
-  renderBarChart(div_id = "test_3", grid_left = '1%',
-                 data = dat_2)
-  
-  renderBarChart(div_id = "test_4", theme = "vintage",
-                 direction = "vertical", grid_left = "10%",
-                 data = dat_2)
-  
-  renderGauge(div_id = "test_5", gauge_name = "Finished Rate",
-              rate = 99.9)
+  renderBarChart(div_id = "test", grid_left = '1%', direction = "vertical",
+                 data = dat)
 }
 
-
-# UI layout ---------------------------------------------------------------
-
+# UI layout -------------------------------------------------
 ui <- fluidPage(
-  # We HAVE TO to load the ECharts javascript library in advance
+  # We MUST load the ECharts javascript library in advance
   loadEChartsLibrary(),
-  loadEChartsTheme('shine'),
-  loadEChartsTheme('vintage'),
   
-  fluidRow(
-    column(6,
-           tags$div(id="test_1", style="width: 80%;height:300px;"),  # Specify the div for the chart. Can also be considered as a space holder
-           deliverChart(div_id = "test_1")  # Deliver the plotting
-    ),
-    column(6,
-           tags$div(id="test_2", style="width:80%;height:300px;"),
-           deliverChart(div_id = "test_2")
-    )
-  ),
-  
-  fluidRow(
-    column(6,
-           tags$div(id="test_3", style="width:80%;height:300px;"),
-           deliverChart(div_id = "test_3")
-    ),
-    column(6,
-           tags$div(id="test_4", style="width:80%;height:300px;"),
-           deliverChart(div_id = "test_4")
-    )
-  ),
-  
-  fluidRow(
-    column(6,
-           tags$div(id="test_5", style="width:100%;height:400px;"),
-           deliverChart(div_id = "test_5")
-    ),
-    column(6
-    )
-  )
+  tags$div(id="test", style="width:50%;height:400px;"),
+  deliverChart(div_id = "test")
 )
 
-# Run the application
+# Run the application --------------------------------------
 shinyApp(ui = ui, server = server)
 ```
 
-![example](http://me.seekingqed.com/files/do_NOT_remove-used_by_ECharts2Shiny_repo.png)
+<p align="center">
+<img src="http://me.seekingqed.com/files/do_NOT_remove-used_by_ECharts2Shiny_repo.png" alt="Drawing" style="width:50%;"/>
+</p>
+
+**(请参考`/examples` 文件夹以获得更多实例信息)**
+### 实例列表
+
+- [1. Basic](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-1%20Basic)
+- [2. Diverse Plots](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-2%20Diverse%20Plots)
+- [3. More Options in Basic Charts](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-3%20More%20Options)
+- [4. Scatter](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-4%20Scatter)
+- [5. Use Reactive Values as Data Input](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-5%20Use%20Reactive%20Values)
+- [6. Radar Chart](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-6%20Radar%20Chart)
+- [7. Word Cloud - Basic](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-7%20word%20cloud)
+- [8. Word Cloud - More Shapes](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-8%20word%20cloud%20-%20more%20shapes)
+- [9. Word Cloud - Use Vector as Data Input](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-9%20word%20cloud%20-%20Use%20vector%20as%20data%20input)
+- [10. Line Chart with Diverse Options](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-10%20Line%20Chart%20with%20diverse%20options)
+- [11. Scatter with point.type Argument](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-11%20Scatter%20with%20point.type)
+- [12. Step Line Chart](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-12%20Step%20Line%20Chart)
+- [13. Deal with Missing Values](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-13%20Deal%20with%20NA%20Values)
+- [14. Heat Map](https://github.com/XD-DENG/ECharts2Shiny/tree/master/examples/example-14%20Heat%20Map)
 
 
 ## 许可证
