@@ -21,12 +21,10 @@
     }
     echarts.registerTheme('Seneca', {
         "color": [
-            "#b1352b",
-            "#808080",
-            "#ff0000",
-            "#d7dbe1",
-            "#ff4f4f",
-            "#72645b"
+            "#B0232A",
+            "#C65D62",
+            "#D99396",
+            "#ECC9CB"
         ],
         "backgroundColor": "rgba(0, 0, 0, 0)",
         "textStyle": {},
@@ -192,12 +190,10 @@
             "symbol": "emptyCircle",
             "smooth": true,
             "color": [
-                "#b1352b",
-                "#808080",
-                "#ff0000",
-                "#d7dbe1",
-                "#ff4f4f",
-                "#72645b"
+                "#B0232A",
+                "#C65D62",
+                "#D99396",
+                "#ECC9CB"
             ],
             "label": {
                 "normal": {

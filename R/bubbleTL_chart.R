@@ -27,6 +27,7 @@ renderBubbleTL <- function(div_id, data,
                             unit.show = 'after',
                             max = 'default'
                           ),
+                          colorset = "['#3D3935','#B0232A','#A4B1CD','#FDC87D']",
                           running_in_shiny = TRUE) {
   
   data <- isolate(data)

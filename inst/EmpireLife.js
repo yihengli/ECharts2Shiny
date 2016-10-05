@@ -21,8 +21,8 @@
     }
     echarts.registerTheme('EmpireLife', {
         "color": [
-            "#A1B922",
-            "#17598F",
+            "#A4B1CD",
+            "#B0232A",
             "#4ea397",
             "#22c3aa",
             "#7bd9a5",

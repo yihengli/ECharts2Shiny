@@ -7,6 +7,7 @@ renderFunnelChart <- function(div_id,
 							  show.legend = TRUE, show.tools = TRUE,
 							  font.size.legend = 12,
 							  animation = TRUE,
+							  colorset = "",
 							  running_in_shiny = TRUE) {
 	data <- isolate(data)
 
@@ -61,6 +62,9 @@ renderFunnelChart <- function(div_id,
 	                                   ", textStyle:{fontSize:", font.size.legend, "}",
 	                                   "},",
 	                                   sep=""),
+	                             ""),
+	                      ifelse(colorset != "",
+	                             paste("color:",colorset,",",sep=""),
 	                             ""),
 	                      "series : [{type:'funnel',left:'10%',top:60,bottom:60,width:'80%',min:0,max:",
 	                      max.data,

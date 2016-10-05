@@ -8,6 +8,7 @@ renderLineChart <- function(div_id,
                             stack_plot = FALSE, step = "null",
                             show.legend = TRUE, show.tools = TRUE,
                             running_in_shiny = TRUE, show.slider = FALSE,
+                            smooth = TRUE,
                             legend.option = list(
                               orient = 'horizontal',
                               
@@ -142,6 +143,11 @@ renderLineChart <- function(div_id,
                   "]",
                   sep=""
     )
+    # Make the line smooth or not
+    if (smooth == TRUE) {
+      temp <- paste(temp,
+                    ",smooth: true",sep="")
+    }
     # Show the max and min points
     if (show.maxmin == TRUE) {
       temp <- paste(temp, 
