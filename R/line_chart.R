@@ -201,7 +201,7 @@ renderLineChart <- function(div_id,
                   ifelse(show.slider,
                         "dataZoom: [{type:'slider',xAxisIndex:0},{type:'slider',left:'3%',yAxisIndex: 0}],",
                           ''),
-                  
+                  "textStyle: {fontFamily:'Source Sans Pro', fontWeight:500},",
                   # Legend Box: more options to change legend's layout
                   # Legend Box: change default selected items when initial plot (good for too many lines)
                   # selected$jscode should follow {'Item1':true,'Item2':false...}
