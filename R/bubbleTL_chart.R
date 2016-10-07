@@ -203,9 +203,9 @@ renderBubbleTL <- function(div_id, data,
                                   borderWidth: 1,
                                   formatter: function (obj) {
                                     var value = obj.value;
-                                    return 'Name' + '：' + value[3] + '<br>'
-                                    + varsX[3] + '：' + UnitFormatter(value[0], varsX[4], varsX[5]) + '<br>'
-                                    + varsY[3] + '：' + UnitFormatter(value[1], varsY[4], varsY[5])  + '<br>'
+                                    return 'Name' + ':' + value[3] + '<br>'
+                                    + varsX[3] + ':' + UnitFormatter(value[0], varsX[4], varsX[5]) + '<br>'
+                                    + varsY[3] + ':' + UnitFormatter(value[1], varsY[4], varsY[5])  + '<br>'
                                     + varsSize[0] + ': ' + UnitFormatter(value[2], varsSize[1], varsSize[2]) + '<br>';
                                   }
                                 },
