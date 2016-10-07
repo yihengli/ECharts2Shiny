@@ -238,7 +238,7 @@ renderLineChart <- function(div_id,
                   # Labels for yAxis
                   yAxis.js,"xAxis:{type:'category', boundaryGap: false, data:",
                   xaxis_name,
-                  "}, series:[",
+                  "}, grid:{right:'15%'},series:[",
                   series_data,
                   "]};",
 
