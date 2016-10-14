@@ -14,6 +14,7 @@ renderBarChart <- function(div_id,
                            rotate.axis.x = 0, rotate.axis.y = 0,
                            bar.max.width = NULL,
                            animation = TRUE,
+                           color = "default",
                            running_in_shiny = TRUE){
 
   data <- isolate(data)
@@ -61,6 +62,21 @@ renderBarChart <- function(div_id,
   }
   series_data <- paste(series_data, collapse = ", ")
   series_data <- paste("[", series_data, "]", sep="")
+  
+  # Implement customized color set
+  # color = c('balck','white')
+  # color -> "color: ['black'],"
+  if (color == "default") {
+    color.js = ""
+  } else {
+    color.js = "color: ["
+    if (length(color) > 1) {
+      for (i in 1:(length(color)-1)) {
+        color.js = paste0(color.js, "'", color[i], "',")
+      }
+    }
+    color.js = paste0(color.js, "'", color[length(color)], "'],")
+  }
 
   js_statement <- paste("var " ,
                         div_id,
@@ -88,6 +104,7 @@ renderBarChart <- function(div_id,
                                      "},",
                                      sep=""),
                                ""),
+                        color.js,
                         "grid: {left:'", grid_left, "', right:'", grid_right, "', top:'", grid_top, "', bottom:'", grid_bottom, "', containLabel: true},",
                         direction_vector[1],
                         ":[{type:'value', axisLabel:{rotate:", rotate.axis.y, ",textStyle:{fontSize:", font.size.axis.y, "}}}], ",

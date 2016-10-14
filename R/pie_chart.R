@@ -10,6 +10,7 @@ renderPieChart <- function(div_id,
                            show.legend = TRUE, show.tools = TRUE,
                            font.size.legend = 12,
                            animation = TRUE,
+                           color = "default",
                            running_in_shiny = TRUE){
 
   data <- isolate(data)
@@ -42,6 +43,22 @@ renderPieChart <- function(div_id,
   data <- as.character(jsonlite::toJSON(data))
   data <- gsub("\"", "\'", data)
 
+  # Implement customized color set
+  # color = c('balck','white')
+  # color -> "color: ['black'],"
+  if (color == "default") {
+    color.js = ""
+  } else {
+    color.js = "color: ["
+    if (length(color) > 1) {
+      for (i in 1:(length(color)-1)) {
+        color.js = paste0(color.js, "'", color[i], "',")
+      }
+    }
+    color.js = paste0(color.js, "'", color[length(color)], "'],")
+  }
+
+
   js_statement <- paste("var " ,
                         div_id,
                         " = echarts.init(document.getElementById('",
@@ -63,6 +80,7 @@ renderPieChart <- function(div_id,
                                      "},",
                                      sep=""),
                                ""),
+                        color.js,
                         "series : [{type: 'pie', radius:'", radius, "', center :['", center_x, "','", center_y, "'],",
 
                         ifelse(show.label,
