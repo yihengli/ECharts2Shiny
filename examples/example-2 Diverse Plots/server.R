@@ -29,7 +29,7 @@ shinyServer(function(input, output) {
                  radius = "70%",center_x = "50%", center_y = "50%")
 
   renderLineChart(div_id = "test_2", theme = "shine",
-                  data = dat_2)
+                  data = dat_2,stack_plot = TRUE)
 
   renderBarChart(div_id = "test_3", grid_left = '1%',
                  data = dat_2)

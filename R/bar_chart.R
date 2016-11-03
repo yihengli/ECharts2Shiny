@@ -15,6 +15,21 @@ renderBarChart <- function(div_id,
                            bar.max.width = NULL,
                            animation = TRUE,
                            color = "default",
+                           y.name = list(
+                             show.yname = FALSE,
+                             name = 'Y',
+                             axisLabel = list(
+                               formatter = '{value}'
+                             ),
+                             nameLocation = 'middle',
+                             nameGap = 40,
+                             nameTextStyle = list(
+                               color = 'Black',
+                               fontStyle = 'normal',
+                               fontWeight = 'bold',
+                               fontSize = 20
+                             )
+                           ),
                            running_in_shiny = TRUE){
 
   data <- isolate(data)
@@ -40,6 +55,22 @@ renderBarChart <- function(div_id,
   legend_name <- paste(sapply(names(data), function(x){paste("'", x, "'", sep="")}), collapse=", ")
   legend_name <- paste("[", legend_name, "]", sep="")
 
+  # The label for yAxis
+  if (y.name$show.yname == TRUE) {
+    yAxis.js = paste(direction_vector[1],
+                     ":{type:'value',",
+                     "name:'",y.name$name,"',",
+                     "nameLocation:'",y.name$nameLocation,"',",
+                     "nameGap:",y.name$nameGap,",",
+                     "nameTextStyle:{fontStyle:'",y.name$nameTextStyle$fontStyle,"',",
+                     "fontSize:",y.name$nameTextStyle$fontSize,",",
+                     "fontWeight:'",y.name$nameTextStyle$fontWeight,"',",
+                     "color:'",y.name$nameTextStyle$color,"'},",
+                     "axisLabel:{formatter:'",y.name$axisLabel$formatter,"'}},",
+                     sep = "")
+  } else {
+    yAxis.js = "yAxis: {type: 'value'},"
+  }
   # Convert raw data into JSON format (Prepare the data in "series" part)
   series_data <- rep("", dim(data)[2])
   for(i in 1:length(series_data)){
@@ -106,8 +137,8 @@ renderBarChart <- function(div_id,
                                ""),
                         color.js,
                         "grid: {left:'", grid_left, "', right:'", grid_right, "', top:'", grid_top, "', bottom:'", grid_bottom, "', containLabel: true},",
-                        direction_vector[1],
-                        ":[{type:'value', axisLabel:{rotate:", rotate.axis.y, ",textStyle:{fontSize:", font.size.axis.y, "}}}], ",
+                        # Labels for yAxis
+                        yAxis.js,
                         direction_vector[2],
                         ":[{type:'category', axisTick:{show:false}, axisLabel:{rotate:", rotate.axis.x, ",textStyle:{fontSize:", font.size.axis.x, "}}, data:",
                         xaxis_name,
