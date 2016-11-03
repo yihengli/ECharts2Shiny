@@ -7,7 +7,8 @@ renderGauge <- function(div_id, theme = "default",
                         gauge_name, rate,
                         show.tools = TRUE,
                         animation = TRUE,
-                        running_in_shiny = TRUE){
+                        running_in_shiny = TRUE,
+                        formatter='{value}%'){
 
   data <- isolate(data)
 
@@ -35,7 +36,9 @@ renderGauge <- function(div_id, theme = "default",
                                "animation:true,",
                                "animation:false,"),
 
-                        "series:[{name:'", gauge_name, "', type:'gauge', detail: {formatter:'{value}%'},data:",
+                        "series:[{name:'", gauge_name, "', type:'gauge', detail: {formatter:'",
+                        formatter,
+                        "'},data:",
                         series_data,
                         "}]};",
 
