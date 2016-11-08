@@ -69,7 +69,7 @@ renderBarChart <- function(div_id,
                      "axisLabel:{formatter:'",y.name$axisLabel$formatter,"'}},",
                      sep = "")
   } else {
-    yAxis.js = "yAxis: {type: 'value'},"
+    yAxis.js = paste(direction_vector[1],": {type: 'value'},",sep = "")
   }
   # Convert raw data into JSON format (Prepare the data in "series" part)
   series_data <- rep("", dim(data)[2])
